@@ -1,6 +1,11 @@
 import  { useState } from "react";
+<<<<<<< HEAD
 // import VenueManagement from "../Component/VenueManagement";
 // import UserManagement from "../Component/UserManagement";
+=======
+import VenueManagement from "../Component/VenueManagement";
+import UserManagement from "../Component/UserManagement";
+>>>>>>> 37946e52a67d0a2a78bafc7e2c5d4ac816add528
 import  Button  from "../Component/Button";
 
 export default function AdminDashboard() {
@@ -29,9 +34,15 @@ export default function AdminDashboard() {
    
 
       {/* Content */}
+<<<<<<< HEAD
       {/* <div className="bg-white p-4 rounded-2xl shadow-md">
         {activeTab === "venues" ? <VenueManagement /> : <UserManagement  />}
       </div> */}
+=======
+      <div className="bg-white p-4 rounded-2xl shadow-md">
+        {activeTab === "venues" ? <VenueManagement /> : <UserManagement  />}
+      </div>
+>>>>>>> 37946e52a67d0a2a78bafc7e2c5d4ac816add528
     </div>
   );
 }

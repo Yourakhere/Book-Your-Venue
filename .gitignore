@@ -21,5 +21,8 @@ backend/dist/
 .vscode/
 .idea/
 *.swp
+<<<<<<< HEAD
 
 ### id==admin@example.com ###### pass==himanshu123
+=======
+>>>>>>> 37946e52a67d0a2a78bafc7e2c5d4ac816add528

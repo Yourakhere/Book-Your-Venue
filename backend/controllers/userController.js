@@ -97,7 +97,11 @@ exports.getAllUsers = async (req, res) => {
 
     // Exclude password from the response
     const users = await User.find({role:{$ne:"superadmin"}}).select('-password');
+<<<<<<< HEAD
     // console.log(users)
+=======
+    console.log(users)
+>>>>>>> 37946e52a67d0a2a78bafc7e2c5d4ac816add528
     res.json(users);
 
   } catch (err) {

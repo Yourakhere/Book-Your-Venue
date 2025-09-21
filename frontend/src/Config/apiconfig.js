@@ -1,8 +1,13 @@
 import axios from "axios";
 
 //const apiUrl = import.meta.env.VITE_API_URL;
+<<<<<<< HEAD
 const apiUrl =  "https://venue-availability.vercel.app";
 // const apiUrl = "http://localhost:5000"
+=======
+
+  const apiUrl = "https://venue-availability-backend.vercel.app/"
+>>>>>>> 37946e52a67d0a2a78bafc7e2c5d4ac816add528
 
 const axiosInstance = axios.create({
   baseURL: `${apiUrl}/api`,

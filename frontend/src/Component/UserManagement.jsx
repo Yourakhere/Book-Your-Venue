@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import Input from "../Component/Input";
 import Button from "../Component/Button";
 import AddUserModal from "./Admin/UserMangement/AddUserModal";
+<<<<<<< HEAD
 import axiosInstance from "../Config/apiconfig";
+=======
+import axiosInstance from "../config/apiconfig";
+>>>>>>> 37946e52a67d0a2a78bafc7e2c5d4ac816add528
 import UpdateUserModal from "./Admin/UserMangement/UpdateUserModal";
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
@@ -15,7 +19,11 @@ export default function UserManagement() {
   const getUsers = async () => {
     try {
       const res = await axiosInstance.get(`/users`);
+<<<<<<< HEAD
       // console.log("res of users", res.data)
+=======
+      console.log("res of users", res.data)
+>>>>>>> 37946e52a67d0a2a78bafc7e2c5d4ac816add528
       setUsers(res.data)
     } catch (error) {
       console.error("Error fetching venues:", error);
@@ -23,7 +31,11 @@ export default function UserManagement() {
   };
 
 
+<<<<<<< HEAD
   // console.log(users)
+=======
+  console.log(users)
+>>>>>>> 37946e52a67d0a2a78bafc7e2c5d4ac816add528
   const filteredUsers = users.filter((u) => {
     if (search != null) {
       return u?.name?.toLowerCase().includes(search.toLowerCase())
@@ -60,10 +72,17 @@ export default function UserManagement() {
     )
   }
   const upateUserhandle = async (id) => {
+<<<<<<< HEAD
     // console.log(id)
     setSelectedUserId(id);  
     setUpdateUserModal(true)
       // console.log(updateUserModal)
+=======
+    console.log(id)
+    setSelectedUserId(id);  
+    setUpdateUserModal(true)
+      console.log(updateUserModal)
+>>>>>>> 37946e52a67d0a2a78bafc7e2c5d4ac816add528
 
     
   }

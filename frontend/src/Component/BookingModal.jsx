@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axiosInstance from '../Config/apiconfig'
@@ -50,10 +51,70 @@ const BookingModal = ({ venue, date, isOpen, onClose,refreshVenues }) => {
       setLoading(false)
 
     }
+=======
+import React, { useState } from 'react';
+import MyCalendar from './MyCalender';
+import { useDispatch, useSelector } from 'react-redux';
+import axiosInstance from '../config/apiconfig';
+import { OK } from 'zod/v3';
+import { format } from 'date-fns';
+import { updateVenueBooking } from '../Store/slicer';
+
+const BookingModal = ({ venue, isOpen, onClose }) => {
+  const date= new Date
+  const formDate=format(date,"yyyy-MM-dd")
+  const [selectedDate, setSelectedDate] = useState(formDate);
+  const [selectedTime, setSelectedTime] = useState('');
+  const [purpose, setPurpose] = useState('');
+  const {user}= useSelector((state)=>state.auth)
+  const dispatch = useDispatch()
+
+// console.log(user,venue)
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleBooking =async () => {
+    if (!selectedDate || !selectedTime || !purpose ) {
+      alert('Please fill in all fields');
+      return;
+    } 
+    if( !user || !venue){
+    alert('user or venue not get')
+      return; 
+    } 
+          const data= {
+  venueId: venue.id,
+  bookedBy:user.id,
+  date:selectedDate,
+  timeSlot:selectedTime,    
+  purpose:purpose
+}
+// console.log(data)
+        const username=user.name
+    try {
+      const res = await axiosInstance.post(`/bookings`,data);
+      console.log(res.data)
+      if(res.data){
+        alert("successfully booked the venue")
+         dispatch(
+      updateVenueBooking({
+        ...res.data,               // booking response
+        bookingName: username,     // add from useState
+      })
+    );
+        onClose();
+      }
+    
+    } catch (error) {
+      console.error("Error fetching venues:", error);
+    }
+>>>>>>> 37946e52a67d0a2a78bafc7e2c5d4ac816add528
   };
 
   if (!isOpen) return null;
 
+<<<<<<< HEAD
   if(loading){
     return (
       <Loader/>
@@ -62,6 +123,11 @@ const BookingModal = ({ venue, date, isOpen, onClose,refreshVenues }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[85vh] overflow-y-auto">
+=======
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+>>>>>>> 37946e52a67d0a2a78bafc7e2c5d4ac816add528
         {/* Header */}
         <div className="border-b p-2">
           <div className="flex justify-between items-center">
@@ -81,6 +147,7 @@ const BookingModal = ({ venue, date, isOpen, onClose,refreshVenues }) => {
           <div className="bg-gray-50 rounded-lg p-4">
             <h3 className="font-semibold  text-gray-900 mb-2">Venue Details</h3>
             <div className="text-sm text-gray-600 space-y-1">
+<<<<<<< HEAD
               <p><strong>Category:</strong> {filteredVenue?.category}</p>
               <p><strong>Capacity:</strong> {filteredVenue?.capacity} people</p>
             </div>
@@ -93,6 +160,43 @@ const BookingModal = ({ venue, date, isOpen, onClose,refreshVenues }) => {
               </p>
             </div>
           </div>
+=======
+              <p><strong>Category:</strong> {venue.category}</p>
+              <p><strong>Location:</strong> {venue.location} </p>
+              <p><strong>Capacity:</strong> {venue.capacity} people</p>
+            </div>
+          </div>
+
+          {/* Calendar */}
+          <div>
+            <h3 className="font-semibold text-gray-900 ">Select Date</h3>
+            <MyCalendar onDateChange={handleDateChange} />
+            <div className="grid grid-cols-7 gap-2">
+
+            </div>
+          </div>
+
+          {/* Time Selection */}
+          <div>
+            <h3 className="font-semibold text-gray-900 mb-3">Available Times</h3>
+            <div className="grid grid-cols-4 lg:grid-cols-5 gap-2">
+              {venue.availableTimes.map((time, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedTime(time)}
+                  className={`p-3 text-sm font-medium rounded-md border transition-colors ${selectedTime === time
+                      ? 'bg-green-600 text-white border-success'
+                      : 'bg-green-50 hover:bg-green-100 border-green-200 text-green-600'
+                    }`}
+                >
+                  {time}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Purpose */}
+>>>>>>> 37946e52a67d0a2a78bafc7e2c5d4ac816add528
           <div>
             <label htmlFor="purpose" className="block font-semibold text-gray-900 mb-2">
               Purpose of Booking
@@ -106,11 +210,31 @@ const BookingModal = ({ venue, date, isOpen, onClose,refreshVenues }) => {
               rows={3}
             />
           </div>
+<<<<<<< HEAD
         </div>
 
         {/* Footer */}
         <div className="border-t p-3 flex gap-2">
 
+=======
+
+          {/* Booking Summary */}
+          {selectedDate && selectedTime && (
+            <div className="bg-blue-50 rounded-lg p-4">
+              <h3 className="font-semibold text-blue-900 mb-2">Booking Summary</h3>
+              <div className="text-sm text-blue-800 space-y-1">
+                <p><strong>Venue:</strong> {venue.name}</p>
+                <p><strong>Date:</strong> {new Date(selectedDate).toLocaleDateString()}</p>
+                <p><strong>Time:</strong> {selectedTime}</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="border-t p-6 flex gap-3">
+      
+>>>>>>> 37946e52a67d0a2a78bafc7e2c5d4ac816add528
           <button
             onClick={handleBooking}
             className="flex-1 px-4 py-2 bg-blue-400 hover:bg-blue-600 text-white rounded-md transition-colors"
