@@ -63,25 +63,25 @@ const VenueCard = ({ venue, onBookVenue, date, refreshVenues }) => {
   };
 
   
-  const handleCancelBooking = async (venueName) => {
-    try {
-      setLoading(true);
-      const res = await axiosInstance.delete(`/bookings`, {
-        data: {
-          day: venue.selectedDay,
-          date: date,
-          timeSlot: venue.availableTimes,
-          venue: venueName,
-        },
-      });
-      refreshVenues();
-    } catch (error) {
-      console.error('Error canceling booking:', error);
-      alert(error.response?.data?.message || 'Cancel failed');
-    } finally {
-      setLoading(false);
+const handleCancelBooking = async (venueName) => {
+  try {
+    setLoading(true);
+    
+    if (!bookingDetails?._id) {
+      alert('Booking information not found');
+      return;
     }
-  };
+
+    const res = await axiosInstance.delete(`/bookings/${bookingDetails._id}`);
+    refreshVenues();
+    alert('Booking cancelled successfully');
+  } catch (error) {
+    console.error('Error canceling booking:', error);
+    alert(error.response?.data?.message || 'Cancellation failed');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col h-full">
