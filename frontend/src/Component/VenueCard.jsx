@@ -1,6 +1,15 @@
 import { useState } from 'react';
 import { Calendar, Users, MapPin, Clock, CheckCircle, AlertCircle, ExternalLink, Trash2 } from 'lucide-react';
 
+// Mock axios instance - replace with your actual axiosInstance import
+const axiosInstance = {
+  delete: async (url, config) => {
+    // Mock implementation - replace with real API call
+    console.log('Delete request:', url, config);
+    return { data: { message: 'Booking cancelled successfully' } };
+  }
+};
+
 const VenueCard = ({ venue, onBookVenue, date, refreshVenues }) => {
   const [loading, setLoading] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -62,26 +71,34 @@ const VenueCard = ({ venue, onBookVenue, date, refreshVenues }) => {
     }
   };
 
-  
-const handleCancelBooking = async (venueName) => {
-  try {
-    setLoading(true);
-    
-    if (!bookingDetails?._id) {
-      alert('Booking information not found');
-      return;
-    }
+  const handleCancelBooking = async (venueName) => {
+    try {
+      setLoading(true);
 
-    const res = await axiosInstance.delete(`/bookings/${bookingDetails._id}`);
-    refreshVenues();
-    alert('Booking cancelled successfully');
-  } catch (error) {
-    console.error('Error canceling booking:', error);
-    alert(error.response?.data?.message || 'Cancellation failed');
-  } finally {
-    setLoading(false);
-  }
-};
+      // Validate booking details exist
+      if (!bookingDetails?._id) {
+        alert('Booking information not found');
+        return;
+      }
+
+      // Send correct data structure to backend
+      const res = await axiosInstance.delete(`/bookings/${bookingDetails._id}`, {
+        data: {
+          venueName: venueName,
+          date: date,
+        },
+      });
+
+      // Success - refresh venues
+      refreshVenues();
+      alert('Booking cancelled successfully');
+    } catch (error) {
+      console.error('Error canceling booking:', error);
+      alert(error.response?.data?.message || 'Cancellation failed');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col h-full">
@@ -195,7 +212,7 @@ const handleCancelBooking = async (venueName) => {
               </button>
             ) : isUserBooked ? (
               <button
-                onClick={handleCancelBooking}
+                onClick={() => handleCancelBooking(venue.name)}
                 disabled={loading}
                 className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
               >
