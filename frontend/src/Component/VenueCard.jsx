@@ -107,7 +107,7 @@ const VenueCard = ({ venue, onBookVenue, date, refreshVenues }) => {
     try {
       const shareTitle = `${venue.name} - Venue Booking`;
       const shareText = `🏢 Venue: ${venue.name}
-📍 Room: ${venue?.roomNo || 'N/A'}
+ 
 🏗️ Building: ${venue?.building || 'Main Campus'}
 📅 Date: ${new Date(date).toLocaleDateString()}
 ⏰ Time: ${bookedTime}
@@ -154,29 +154,25 @@ const VenueCard = ({ venue, onBookVenue, date, refreshVenues }) => {
     }
   };
 
-  const handleCancelBooking = async (venueName) => {
-    try {
-      setLoading(true);
-      const res = await fetch(`/api/bookings`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          day: venue.selectedDay,
-          date: date,
-          timeSlot: venue.availableTimes,
-          venue: venueName,
-        }),
-      });
-      refreshVenues();
-    } catch (error) {
-      console.error('Error canceling booking:', error);
-      alert(error.response?.data?.message || 'Cancel failed');
-    } finally {
-      setLoading(false);
+ const handleCancelBooking = async (venueName) => {
+  try {
+    setLoading(true);
+    
+    if (!bookingDetails?._id) {
+      alert('Booking information not found');
+      return;
     }
-  };
+
+    const res = await axiosInstance.delete(`/bookings/${bookingDetails._id}`);
+    refreshVenues();
+    alert('Booking cancelled successfully');
+  } catch (error) {
+    console.error('Error canceling booking:', error);
+    alert(error.response?.data?.message || 'Cancellation failed');
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleBookWithPurpose = () => {
     if (selectedPurpose && onBookVenue) {
