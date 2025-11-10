@@ -62,15 +62,22 @@ const VenueCard = ({ venue, onBookVenue, date, refreshVenues }) => {
     }
   };
 
-  const handleCancelBooking = async () => {
-    if (!window.confirm('Are you sure you want to cancel this booking?')) return;
-    
+  
+  const handleCancelBooking = async (venueName) => {
     try {
       setLoading(true);
-      // await axiosInstance.delete(`/bookings`, { data: { ... } });
-      refreshVenues?.();
+      const res = await axiosInstance.delete(`/bookings`, {
+        data: {
+          day: venue.selectedDay,
+          date: date,
+          timeSlot: venue.availableTimes,
+          venue: venueName,
+        },
+      });
+      refreshVenues();
     } catch (error) {
       console.error('Error canceling booking:', error);
+      alert(error.response?.data?.message || 'Cancel failed');
     } finally {
       setLoading(false);
     }
